@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% for value in allteams %}
+    <span class='float:left'>
+      <img class='resize' src='{{ value }}'></img>
+    </span>
+    {% endfor %}
+
+{% endblock %}
