@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    {% if title %}
+      <title>{{ title }} - FPL</title>
+    {% else %}
+      <title>Welcome to FPL</title>
+    {% endif %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <header>
+      <a href="{{ url_for('index') }}">Home</a>
+      <a>FPL</a>
+    </header>
+    <section>
+      <nav>
+        <ul>
+          {% for k, team in teams_dict.items() %}
+           <li><a href="{{ team }}">{{ team }}</a></li>
+          {% endfor %}
+        </ul>
+      </nav>
+      <article>
+        {% block content %}
+        {% endblock %}
+      </article>
+    </section>
+    <footer>
+      <p>Footer</p>
+    </footer>
+  </body>
+</html>
