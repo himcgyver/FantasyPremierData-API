@@ -21,9 +21,6 @@ def clearList(names):
     for item in names:
         item.clear()
 
-def overlappingCoo(x, y):
-    pass
-
 def extract_all_data():
     # Retrieve data about all teams/players #
     r = requests.get(ALL_DATA_URL)
@@ -46,33 +43,26 @@ def extract_all_data():
 # Create dict with all PL teams and assign their ID #
 #####################################################
 data = extract_all_data()
-teams_dict = {}
-for key in data['teams']:
-    teams_dict[key['id']] = key['name']
 
 # Create dict with player info and it's stats
-types = []
-x_axis = []
-y_axis = []
 allteams = []
-for tkey, tvalue in teams_dict.items():
-    for ekey in data['elements']:
-        if ekey['team'] == tkey:
-            if ekey['minutes'] < 1000:
+info = {}
+for teams in data['teams']: #20 teams
+    for player_list in data['elements']: #567 players
+        if player_list['team'] == teams['id']:
+            if player_list['minutes'] < 1000:
                 continue
             else:
-                types.extend([ekey['web_name']])
-                x_axis.extend([ekey['minutes']])
-                y_axis.extend([ekey['goals_conceded']])
+                info[player_list['web_name']] = [player_list['minutes'], player_list['goals_conceded']]
+    x_axis = [v[0] for (k,v) in info.items()]
+    y_axis = [v[1] for (k,v) in info.items()]            
     for i, name in enumerate(types):
-        x = x_axis[i]
-        y = y_axis[i]
-        #Ideti f-cija kad nesioverlappintu vardai
-
+        x = values[0]   #min played
+        y = values[1]   #goals conc.
         plt.text(x, y, name, fontsize=7)
-        
+    plt.grid(True)
     plt.scatter(x_axis, y_axis, marker='x', color='red')
-    plt.title(tvalue)
+    plt.title(teams['name'])
     plt.xlabel("Minutes Played")
     plt.ylabel("Goals Conceded")
     #Convert to image
